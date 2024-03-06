@@ -2,17 +2,32 @@ import { MyButton } from "./UI/button/MyButton";
 import { MyInput } from "./UI/input/MyInput";
 import { useRef, useState } from "react";
 import '../styles/Form.scss';
+import { Post } from "../types/post";
 
-export const Form = () => {
-  const [title, setTitle] = useState('');
-  const [body, setBody] = useState('');
+type Props = {
+  onSubmit: (post: Post) => void;
+}
+
+export const Form: React.FC<Props> = ({ onSubmit }) => {
+  const [post, setPost] = useState({title: '', body: ''})
 
   function handleSubmit(event: SubmitEvent) {
     event.preventDefault();
 
-    setTitle('');
-    setBody('');
-    console.log(bodyInputRef.current?.value || 'null' )
+    const newPost = {
+      ...post,
+      id: Date.now(),
+    };
+
+    if (!newPost.body || !newPost.title) {
+      console.log("Error");
+      
+      return;
+    };
+  
+    onSubmit(newPost);
+
+    setPost({title: '', body:''});
   }
 
   const bodyInputRef = useRef<HTMLInputElement>(null);
@@ -20,16 +35,17 @@ export const Form = () => {
   return (
     <form className='form'>
       <MyInput
-        value={title}
+        value={post.title}
         type="text"
         placeholder='title'
-        onChange={event => setTitle(event.target.value)}
+        onChange={event => setPost({...post, title: event.target.value})}
       />
 
+      {/* for expample add ref */}
       <MyInput
         ref={bodyInputRef}
-        onChange={event => setBody(event.target.value)}
-        value={body}
+        onChange={event => setPost({...post, body: event.target.value})}
+        value={post.body}
         type="text"
         placeholder='description'
       />

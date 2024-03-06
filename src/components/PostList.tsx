@@ -12,7 +12,13 @@ export const PostList: React.FC<Props> = ({ posts }) => {
       <h1 className="post-list__title">Post List</h1>
 
       <div className="post-list__posts">
-        {posts.map(post => (<PostItem post={post} key={post.id}/>))}
+        {posts.map((post, i) => (
+          <PostItem
+            post={post}
+            key={post.id}
+            id={i + 1}
+          />
+        ))}
       </div>
     </div>
   )

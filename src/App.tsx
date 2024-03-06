@@ -7,15 +7,18 @@ import { Form } from './components/Form';
 const initialPosts: Post[] = [
   { id: 1, title: "Java Script 1", body: 'some text for body 100' },
   { id: 2, title: "Java Script 2 ", body: 'some text for body 200' },
-  { id: 3, title: "Java Script 3", body: 'some text for body 300' },
 ]
 
 function App() {
-  const [posts] = useState<Post[]>(initialPosts);
+  const [posts, setPosts] = useState<Post[]>(initialPosts);
+
+  function handleOnSubmit(post: Post) {
+    setPosts(currentPosts => [...currentPosts, post])
+  }
 
   return (
     <div className="app">
-      <Form/>
+      <Form onSubmit={handleOnSubmit} />
       <PostList posts={posts} />
     </div>
   );

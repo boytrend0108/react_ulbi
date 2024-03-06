@@ -4,7 +4,7 @@ import classes from './MyInput.module.scss';
 type Props = {
   type: string;
   placeholder: string;
-  value: string;
+  value?: string;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
 };
 

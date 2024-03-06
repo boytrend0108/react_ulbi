@@ -3,10 +3,11 @@ import { Post } from '../types/post';
 
 type Props = {
   post: Post;
+  id: number;
 }
 
-export const PostItem: React.FC<Props> = (props) => {
-  const {id, title, body} = props.post;
+export const PostItem: React.FC<Props> = ({post, id}) => {
+  const {title, body} = post;
 
   return (
     <div className="post">

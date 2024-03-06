@@ -1,12 +1,20 @@
 import '../styles/PostItem.scss';
+import { Post } from '../types/post';
 
-export const PostItem = () => {
+type Props = {
+  post: Post;
+}
+
+export const PostItem: React.FC<Props> = (props) => {
+  const {id, title, body} = props.post;
+
   return (
     <div className="post">
       <div className="post__content">
-        <strong>1.Java Script</strong>
-        <div> JS  - is a codding language</div>
+        <strong>{`${id}. ${title}`}</strong>
+        <div>{body}</div>
       </div>
+      
       <div className="post__btns">
         <button>Delete</button>
       </div>

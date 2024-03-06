@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import './styles/App.scss';
 import { Post } from './types/post';
 import { PostList } from './components/PostList';
-import { MyButton } from './components/UI/button/MyButton';
-import { MyInput } from './components/UI/input/MyInput';
 import { Form } from './components/Form';
 
 const initialPosts: Post[] = [

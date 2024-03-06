@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+
 import './styles/App.scss';
 import { Post } from './types/post';
 import { PostList } from './components/PostList';
@@ -16,10 +17,25 @@ function App() {
     setPosts(currentPosts => [...currentPosts, post])
   }
 
+  function removePost(post: Post) {
+    setPosts(posts.filter(p => post.id !== p.id));
+  }
+
   return (
     <div className="app">
       <Form onSubmit={handleOnSubmit} />
-      <PostList posts={posts} />
+
+      <h1 className="app__title">Post List</h1>
+
+      {posts.length
+        ?
+        <PostList posts={posts} remove={removePost} />
+        :
+        <div className="notification is-primary">
+          <strong>There are no posts</strong>
+        </div>
+      }
+
     </div>
   );
 }

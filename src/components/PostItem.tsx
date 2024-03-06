@@ -1,12 +1,14 @@
 import '../styles/PostItem.scss';
 import { Post } from '../types/post';
+import { MyButton } from './UI/button/MyButton';
 
 type Props = {
   post: Post;
   id: number;
+  remove: (post: Post) => void;
 }
 
-export const PostItem: React.FC<Props> = ({post, id}) => {
+export const PostItem: React.FC<Props> = ({post, id, remove}) => {
   const {title, body} = post;
 
   return (
@@ -17,7 +19,7 @@ export const PostItem: React.FC<Props> = ({post, id}) => {
       </div>
       
       <div className="post__btns">
-        <button>Delete</button>
+        <MyButton onClick={() => remove(post)}>Delete</MyButton>
       </div>
     </div>
   )

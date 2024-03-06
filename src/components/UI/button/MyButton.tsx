@@ -3,7 +3,7 @@ import classes from './MyButton.module.scss';
 type Props = {
   children?: React.ReactNode;
   disabled?: boolean;
-  onClick: (e: any) => void;
+  onClick: (value: any) => void;
 }
 
 export const MyButton: React.FC<Props> = ({ children, ...props }) => {

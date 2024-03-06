@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import './styles/App.scss';
 import { Post } from './types/post';
 import { PostList } from './components/PostList';
 import { Form } from './components/Form';
 import { MySelect } from './components/UI/select/MySelect';
+import { MyInput } from './components/UI/input/MyInput';
 
 const initialPosts: Post[] = [
   { id: 1, title: "Java Script 1", body: 'some text for body 100' },
@@ -13,7 +14,18 @@ const initialPosts: Post[] = [
 
 function App() {
   const [posts, setPosts] = useState<Post[]>(initialPosts);
-  const [sortBy, setSortBy] = useState<keyof Post | ''>('')
+  const [sortBy, setSortBy] = useState<keyof Post | ''>('');
+  const [, setQuery] = useState('');
+
+  const sortedPost = useMemo(() => {
+    if (sortBy !== '') {
+      return [...posts].sort((a, b) => {
+        return a[sortBy].toString().localeCompare(b[sortBy].toString())
+      })
+    }
+
+    return posts;
+  }, [posts, sortBy]);
 
   function handleOnSubmit(post: Post) {
     setPosts(currentPosts => [...currentPosts, post])
@@ -25,10 +37,6 @@ function App() {
 
   function sortPost(value: keyof Post) {
     setSortBy(value);
-    
-    setPosts([...posts].sort((a, b) => { 
-      return a[value].toString().localeCompare(b[value].toString())
-    }))
   }
 
   return (
@@ -37,21 +45,29 @@ function App() {
 
       <h1 className="app__title">Post List</h1>
 
+
+      <div className="app__search">
+        <MyInput
+          type='text' placeholder='search...'
+          onChange={query => setQuery(query)}
+        />
+      </div>
+
       <div className="app__select">
         <MySelect
           defaultValue='Sort by'
           options={[
-            {name: 'id', value: 'id'},
-            {name: 'title', value: 'title'},
+            { name: 'id', value: 'id' },
+            { name: 'title', value: 'title' },
           ]}
           value={sortBy}
-          select={value => sortPost(value) }
+          select={value => sortPost(value)}
         />
       </div>
 
       {posts.length
         ?
-        <PostList posts={posts} remove={removePost} />
+        <PostList posts={sortedPost} remove={removePost} />
         :
         <div className="notification is-primary">
           <strong>There are no posts</strong>

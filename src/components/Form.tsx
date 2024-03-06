@@ -38,13 +38,13 @@ export const Form: React.FC<Props> = ({ onSubmit }) => {
         value={post.title}
         type="text"
         placeholder='title'
-        onChange={event => setPost({...post, title: event.target.value})}
+        onChange={title => setPost({...post, title})}
       />
 
       {/* for expample add ref */}
       <MyInput
         ref={bodyInputRef}
-        onChange={event => setPost({...post, body: event.target.value})}
+        onChange={body => setPost({...post, body})}
         value={post.body}
         type="text"
         placeholder='description'

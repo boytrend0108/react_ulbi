@@ -1,11 +1,11 @@
-import React, { ChangeEvent, forwardRef } from 'react';
+import { forwardRef } from 'react';
 import classes from './MyInput.module.scss';
 
 type Props = {
   type: string;
   placeholder: string;
   value?: string;
-  onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  onChange: (e: string) => void;
 };
 
 export const MyInput = forwardRef<HTMLInputElement, Props>(
@@ -16,7 +16,7 @@ export const MyInput = forwardRef<HTMLInputElement, Props>(
         type={type}
         placeholder={placeholder}
         value={value}
-        onChange={onChange}
+        onChange={e => onChange(e.target.value)}
         className={classes.myInput}
       />
     );

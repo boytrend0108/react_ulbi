@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/react_ulbi/static/css/main.8d1c0c86.css",
-    "main.js": "/react_ulbi/static/js/main.1506c101.js",
+    "main.css": "/react_ulbi/static/css/main.30768dd5.css",
+    "main.js": "/react_ulbi/static/js/main.2674a966.js",
     "index.html": "/react_ulbi/index.html",
-    "main.8d1c0c86.css.map": "/react_ulbi/static/css/main.8d1c0c86.css.map",
-    "main.1506c101.js.map": "/react_ulbi/static/js/main.1506c101.js.map"
+    "main.30768dd5.css.map": "/react_ulbi/static/css/main.30768dd5.css.map",
+    "main.2674a966.js.map": "/react_ulbi/static/js/main.2674a966.js.map"
   },
   "entrypoints": [
-    "static/css/main.8d1c0c86.css",
-    "static/js/main.1506c101.js"
+    "static/css/main.30768dd5.css",
+    "static/js/main.2674a966.js"
   ]
 }

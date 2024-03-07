@@ -6,6 +6,8 @@ import { PostList } from './components/PostList';
 import { Form } from './components/Form';
 import { PostFilter } from './components/PostFilter';
 import { Filters } from './types/filter';
+import { MyModal } from './components/UI/modal/MyModal';
+import { MyButton } from './components/UI/button/MyButton';
 
 const initialPosts: Post[] = [
   { id: 1, title: "Java Script 1", body: 'some text for body 100' },
@@ -14,7 +16,8 @@ const initialPosts: Post[] = [
 
 function App() {
   const [posts, setPosts] = useState<Post[]>(initialPosts);
-  const [filter, setFilter] = useState<Filters>({ sort: '', query: '' })
+  const [filter, setFilter] = useState<Filters>({ sort: '', query: '' });
+  const [modal, setModal] = useState(false);
 
   const sortedPosts = useMemo(() => {
     const { sort } = filter;
@@ -37,6 +40,7 @@ function App() {
 
   function handleOnSubmit(post: Post) {
     setPosts(currentPosts => [...currentPosts, post])
+    setModal(false);
   }
 
   function removePost(post: Post) {
@@ -46,7 +50,11 @@ function App() {
 
   return (
     <div className="app">
-      <Form onSubmit={handleOnSubmit} />
+      <MyModal visible={modal} setVisible={setModal}>
+        <Form onSubmit={handleOnSubmit} />
+      </MyModal>
+
+      <MyButton onClick={() => setModal(true)}>Create post</MyButton>
 
       <h1 className="app__title">Post List</h1>
 

@@ -1,5 +1,9 @@
 import { Post } from "../types/post";
 import { PostItem } from "./PostItem";
+import {
+  CSSTransition,
+  TransitionGroup,
+} from 'react-transition-group';
 import '../styles/PostList.scss';
 
 type Props = {
@@ -15,18 +19,25 @@ export const PostList: React.FC<Props> = ({ posts, remove }) => {
       </div>
     )
   }
-  
+
   return (
     <div className="post-list">
-      <div className="post-list__posts">
-        {posts.map((post, i) => (
-          <PostItem
-            remove={remove}
-            post={post}
-            key={post.id}
-            id={i + 1}
-          />
-        ))}
+      <div>
+        <TransitionGroup className="post-list__posts">
+          {posts.map((post, i) => (
+            <CSSTransition
+              key={post.id}
+              timeout={500}
+              classNames="post" // later we'll use it
+            >
+              <PostItem
+                remove={remove}
+                post={post}
+                id={i + 1}
+              />
+            </CSSTransition>
+          ))}
+        </TransitionGroup>
       </div>
     </div>
   )

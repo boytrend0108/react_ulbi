@@ -8,35 +8,14 @@ import { PostFilter } from './components/PostFilter';
 import { Filters } from './types/filter';
 import { MyModal } from './components/UI/modal/MyModal';
 import { MyButton } from './components/UI/button/MyButton';
-
-const initialPosts: Post[] = [
-  { id: 1, title: "Java Script 1", body: 'some text for body 100' },
-  { id: 2, title: "Java Script 2 ", body: 'some text for body 200' },
-]
+import { usePosts } from './hooks/usePost';
 
 function App() {
-  const [posts, setPosts] = useState<Post[]>(initialPosts);
+  const [posts, setPosts] = useState<Post[]>([]);
   const [filter, setFilter] = useState<Filters>({ sort: '', query: '' });
   const [modal, setModal] = useState(false);
 
-  const sortedPosts = useMemo(() => {
-    const { sort } = filter;
-
-    if (sort !== '') {
-      return [...posts].sort((a, b) => {
-        return a[sort].toString().localeCompare(b[sort].toString())
-      })
-    }
-
-    return posts;
-  }, [posts, filter.sort]);
-
-  const sortedAndSearchedPosts = useMemo(() => {
-    const { query } = filter;
-    return sortedPosts.filter(post => {
-      return post.title.toLowerCase().includes(query.toLowerCase())
-    })
-  }, [filter.query, sortedPosts])
+  const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query);
 
   function handleOnSubmit(post: Post) {
     setPosts(currentPosts => [...currentPosts, post])
@@ -46,7 +25,6 @@ function App() {
   function removePost(post: Post) {
     setPosts(posts.filter(p => post.id !== p.id));
   }
-
 
   return (
     <div className="app">

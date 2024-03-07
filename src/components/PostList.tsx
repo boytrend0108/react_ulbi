@@ -8,6 +8,14 @@ type Props = {
 }
 
 export const PostList: React.FC<Props> = ({ posts, remove }) => {
+  if (!posts.length) {
+    return (
+      <div className="notification is-primary">
+        <strong>There are no posts</strong>
+      </div>
+    )
+  }
+  
   return (
     <div className="post-list">
       <div className="post-list__posts">

@@ -1,0 +1,13 @@
+.filter {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  &__select {
+    margin-bottom: 10px;
+  }
+
+  &__search {
+    margin-bottom: 10px;
+  }
+}

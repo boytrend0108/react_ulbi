@@ -4,8 +4,8 @@ import './styles/App.scss';
 import { Post } from './types/post';
 import { PostList } from './components/PostList';
 import { Form } from './components/Form';
-import { MySelect } from './components/UI/select/MySelect';
-import { MyInput } from './components/UI/input/MyInput';
+import { PostFilter } from './components/PostFilter';
+import { Filters } from './types/filter';
 
 const initialPosts: Post[] = [
   { id: 1, title: "Java Script 1", body: 'some text for body 100' },
@@ -14,24 +14,26 @@ const initialPosts: Post[] = [
 
 function App() {
   const [posts, setPosts] = useState<Post[]>(initialPosts);
-  const [sortBy, setSortBy] = useState<keyof Post | ''>('');
-  const [query, setQuery] = useState('');
+  const [filter, setFilter] = useState<Filters>({ sort: '', query: '' })
 
   const sortedPosts = useMemo(() => {
-    if (sortBy !== '') {
+    const { sort } = filter;
+
+    if (sort !== '') {
       return [...posts].sort((a, b) => {
-        return a[sortBy].toString().localeCompare(b[sortBy].toString())
+        return a[sort].toString().localeCompare(b[sort].toString())
       })
     }
 
     return posts;
-  }, [posts, sortBy]);
+  }, [posts, filter.sort]);
 
   const sortedAndSearchedPosts = useMemo(() => {
+    const { query } = filter;
     return sortedPosts.filter(post => {
       return post.title.toLowerCase().includes(query.toLowerCase())
     })
-  }, [query, sortedPosts])
+  }, [filter.query, sortedPosts])
 
   function handleOnSubmit(post: Post) {
     setPosts(currentPosts => [...currentPosts, post])
@@ -41,9 +43,6 @@ function App() {
     setPosts(posts.filter(p => post.id !== p.id));
   }
 
-  function sortPost(value: keyof Post) {
-    setSortBy(value);
-  }
 
   return (
     <div className="app">
@@ -51,35 +50,9 @@ function App() {
 
       <h1 className="app__title">Post List</h1>
 
+      <PostFilter setFilter={setFilter} filter={filter} />
 
-      <div className="app__search">
-        <MyInput
-          type='text' placeholder='search...'
-          onChange={query => setQuery(query)}
-        />
-      </div>
-
-      <div className="app__select">
-        <MySelect
-          defaultValue='Sort by'
-          options={[
-            { name: 'id', value: 'id' },
-            { name: 'title', value: 'title' },
-          ]}
-          value={sortBy}
-          select={value => sortPost(value)}
-        />
-      </div>
-
-      {sortedAndSearchedPosts.length
-        ?
-        <PostList posts={sortedAndSearchedPosts} remove={removePost} />
-        :
-        <div className="notification is-primary">
-          <strong>There are no posts</strong>
-        </div>
-      }
-
+      <PostList posts={sortedAndSearchedPosts} remove={removePost} />
     </div>
   );
 }

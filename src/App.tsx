@@ -15,9 +15,9 @@ const initialPosts: Post[] = [
 function App() {
   const [posts, setPosts] = useState<Post[]>(initialPosts);
   const [sortBy, setSortBy] = useState<keyof Post | ''>('');
-  const [, setQuery] = useState('');
+  const [query, setQuery] = useState('');
 
-  const sortedPost = useMemo(() => {
+  const sortedPosts = useMemo(() => {
     if (sortBy !== '') {
       return [...posts].sort((a, b) => {
         return a[sortBy].toString().localeCompare(b[sortBy].toString())
@@ -26,6 +26,12 @@ function App() {
 
     return posts;
   }, [posts, sortBy]);
+
+  const sortedAndSearchedPosts = useMemo(() => {
+    return sortedPosts.filter(post => {
+      return post.title.toLowerCase().includes(query.toLowerCase())
+    })
+  }, [query, sortedPosts])
 
   function handleOnSubmit(post: Post) {
     setPosts(currentPosts => [...currentPosts, post])
@@ -65,9 +71,9 @@ function App() {
         />
       </div>
 
-      {posts.length
+      {sortedAndSearchedPosts.length
         ?
-        <PostList posts={sortedPost} remove={removePost} />
+        <PostList posts={sortedAndSearchedPosts} remove={removePost} />
         :
         <div className="notification is-primary">
           <strong>There are no posts</strong>

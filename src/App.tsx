@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import './styles/App.scss';
+import PostService from './api/PostServise';
 import { Form } from './components/Form';
 import { PostList } from './components/PostList';
 import { PostFilter } from './components/PostFilter';
@@ -9,27 +10,24 @@ import { MyButton } from './components/UI/button/MyButton';
 import { usePosts } from './hooks/usePost';
 import { Post } from './types/post';
 import { Filters } from './types/filter';
-import PostService from './api/PostServise';
 import { MyLoader } from './components/UI/loader/MyLoader';
+import { useFetching } from './hooks/useFetching';
 
 function App() {
   const [posts, setPosts] = useState<Post[]>([]);
   const [filter, setFilter] = useState<Filters>({ sort: '', query: '' });
   const [modal, setModal] = useState(false);
-  const [isPostsLoading, setIsPostsLoading] = useState(true);
+  const [fetchPost, isLoading, error] = useFetching(async () => {
+    const posts = await PostService.getAll();
+
+    setPosts(posts);
+  })
 
   const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query);
 
   useEffect(() => {
     fetchPost();
   }, []);
-
-  const fetchPost = async () => {
-    const posts = await PostService.getAll();
-   
-    setPosts(posts);
-    setIsPostsLoading(false);
-  }
 
   function handleOnSubmit(post: Post) {
     setPosts(currentPosts => [...currentPosts, post])
@@ -51,14 +49,20 @@ function App() {
       <h1 className="app__title">Post List</h1>
 
       <PostFilter setFilter={setFilter} filter={filter} />
-      
-      {isPostsLoading 
-        ?  <div className='app__loader'>
-             <MyLoader />
-          </div>
-        :  <PostList posts={sortedAndSearchedPosts} remove={removePost} />
-      }
-     
+
+      {error && (
+        <h2>{error}</h2>
+      )}
+
+      {isLoading && (
+        <div className='app__loader'>
+          <MyLoader />
+        </div>
+      )}
+
+      {!isLoading && !error && (
+        <PostList posts={sortedAndSearchedPosts} remove={removePost} />
+      )}
     </div>
   );
 }

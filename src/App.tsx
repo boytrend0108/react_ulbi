@@ -12,22 +12,38 @@ import { Post } from './types/post';
 import { Filters } from './types/filter';
 import { MyLoader } from './components/UI/loader/MyLoader';
 import { useFetching } from './hooks/useFetching';
+import { getPageCount } from './utils/pages';
+import { usePagination } from './hooks/usePagination';
+import classNames from 'classnames';
+import { MyPagination } from './components/UI/pagination/MyPagination';
 
 function App() {
   const [posts, setPosts] = useState<Post[]>([]);
   const [filter, setFilter] = useState<Filters>({ sort: '', query: '' });
   const [modal, setModal] = useState(false);
-  const [fetchPost, isLoading, error] = useFetching(async () => {
-    const posts = await PostService.getAll();
+  const [totalPage, setTotalPage] = useState(0);
+  const [limit, setLimit] = useState(10);
+  const [page, setPage] = useState(1);
 
-    setPosts(posts);
-  })
+  const [fetchPost, isLoading, error]
+    = useFetching(async (limit:number, page: number) => {
+    const response = await PostService.getAll(limit, page);
+
+    setPosts(response.data);
+    const totalCount = response.headers['x-total-count'];
+    setTotalPage(getPageCount(totalCount, limit));
+  });
 
   const sortedAndSearchedPosts = usePosts(posts, filter.sort, filter.query);
 
   useEffect(() => {
-    fetchPost();
+    fetchPost(limit, page);
   }, []);
+
+  function changePage(page: number) {
+    setPage(page);
+    fetchPost(limit, page)
+  }
 
   function handleOnSubmit(post: Post) {
     setPosts(currentPosts => [...currentPosts, post])
@@ -63,6 +79,8 @@ function App() {
       {!isLoading && !error && (
         <PostList posts={sortedAndSearchedPosts} remove={removePost} />
       )}
+
+      <MyPagination totalPage={totalPage} page={page} changePage={changePage} />
     </div>
   );
 }

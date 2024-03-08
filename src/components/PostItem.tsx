@@ -8,8 +8,8 @@ type Props = {
   remove: (post: Post) => void;
 }
 
-export const PostItem: React.FC<Props> = ({post, id, remove}) => {
-  const {title, body} = post;
+export const PostItem: React.FC<Props> = ({post, remove}) => {
+  const {title, body, id} = post;
 
   return (
     <div className="post">

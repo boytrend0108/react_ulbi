@@ -5,4 +5,10 @@
   align-items: center;
   padding: 10px;
   border: 2px solid teal;
+
+  &__btns {
+    display: flex;
+    gap: 10px;
+    padding-inline: 10px;
+  }
 }

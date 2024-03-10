@@ -1,20 +1,14 @@
-import { HashRouter, Link, Route, Routes } from "react-router-dom";
-import { About } from "./pages/About";
-import Posts from "./pages/Posts";
+import { HashRouter } from "react-router-dom";
+import { Navbar } from "./components/UI/navbar/Navbar";
+import { AppRouter } from "./components/AppRouter";
 
 function App() {
 
   return (
     <HashRouter>
-      <div className="navbar">
-        <Link className="navbar__link" to='./about'>About</Link>
-        <Link className="navbar__link" to='./posts'>Posts</Link>
-      </div>
+      <Navbar />
 
-      <Routes>
-        <Route path="/about" element={<About />} />
-        <Route path="/posts" element={<Posts />} />
-      </Routes>
+      <AppRouter />
     </HashRouter>
   );
 }

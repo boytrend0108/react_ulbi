@@ -1,7 +1,8 @@
+import { useRef, useState } from "react";
+
+import '../styles/Form.scss';
 import { MyButton } from "./UI/button/MyButton";
 import { MyInput } from "./UI/input/MyInput";
-import { useRef, useState } from "react";
-import '../styles/Form.scss';
 import { Post } from "../types/post";
 
 type Props = {
@@ -33,7 +34,7 @@ export const Form: React.FC<Props> = ({ onSubmit }) => {
   const bodyInputRef = useRef<HTMLInputElement>(null);
 
   return (
-    <form className='form'>
+    <form className="form">
       <MyInput
         value={post.title}
         type="text"
